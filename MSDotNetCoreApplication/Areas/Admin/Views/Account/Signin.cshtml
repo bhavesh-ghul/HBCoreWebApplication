@@ -1,0 +1,57 @@
+﻿@model Domain.User.UserLogin
+@{
+    ViewData["Title"] = "SignIn";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<form asp-area="Admin" asp-controller="Account" asp-action="Signin" method="POST">
+    <div class="msg">Sign in to start your session</div>
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="input-group">
+        <span class="input-group-addon">
+            <i class="material-icons">person</i>
+        </span>
+        <div class="form-line">
+            <input type="text" class="form-control" asp-for="userName" name="username" placeholder="Username" autofocus>
+        </div>
+        <div>
+            <span asp-validation-for="userName" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="input-group">
+        <span class="input-group-addon">
+            <i class="material-icons">lock</i>
+        </span>
+        <div class="form-line">
+            <input type="password" class="form-control" asp-for="password" name="password" placeholder="Password" required>
+        </div>
+        <div>
+            <span asp-validation-for="password" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-8 p-t-5">
+            <input type="checkbox" asp-for="rememberme" name="rememberme" id="rememberme" class="filled-in chk-col-pink">
+            <label for="rememberme">Remember Me</label>
+            <div>
+                <span asp-validation-for="rememberme" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-xs-4">
+            <button class="btn btn-block bg-pink waves-effect" type="submit">SIGN IN</button>
+        </div>
+    </div>
+    <div class="row m-t-15 m-b--20">
+        <div class="col-xs-6">
+            <a asp-area="" asp-controller="Account" asp-action="Signup">Register Now!</a>
+        </div>
+        <div class="col-xs-6 align-right">
+            <a asp-area="Admin" asp-controller="Account" asp-action="forgotpassword">Forgot Password?</a>
+        </div>
+    </div>
+</form>
+
+@section Scripts{
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
