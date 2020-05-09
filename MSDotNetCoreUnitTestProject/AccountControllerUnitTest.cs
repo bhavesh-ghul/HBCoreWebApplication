@@ -61,7 +61,7 @@ namespace MSDotNetCoreUnitTestProject
         }
 
         [TestMethod]
-        public void VerifyEmailAddress()
+        public void VerifyEmailAddress_Format()
         {
             CheckPropertyValidation cpv = new CheckPropertyValidation();
             var up = new UserProfile
@@ -73,12 +73,12 @@ namespace MSDotNetCoreUnitTestProject
         }
 
         [TestMethod]
-        public void VerifyPhoneNumber()
+        public void VerifyPhoneNumber_Length()
         {
             CheckPropertyValidation cpv = new CheckPropertyValidation();
             var up = new UserProfile
             {
-                phone = "9904092555",
+                phone = "9974257234",
             };
             var errorcount = cpv.IsValidPhoneNumber(up.phone);
             Assert.AreEqual(true, errorcount);
@@ -94,11 +94,24 @@ namespace MSDotNetCoreUnitTestProject
             CheckPropertyValidation cpv = new CheckPropertyValidation();
             var up = new LoginUser
             {
-                Email = "mistryaalap@gmail.com",
+                Email = "mistry@gmail.com",
                 Password = "aalap@123",
             };
             var errorcount = cpv.myValidation(up).Count();
             Assert.AreEqual(0, errorcount);
+        }
+
+        [TestMethod]
+        public void IsLoginFieldsValidationWorks()
+        {
+            CheckPropertyValidation cpv = new CheckPropertyValidation();
+            var up = new LoginUser
+            {
+                Email = "",
+                Password = "",
+            };
+            var errorcount = cpv.myValidation(up).Count();
+            Assert.AreNotEqual(0, errorcount);
         }
 
         [TestMethod]
@@ -113,9 +126,26 @@ namespace MSDotNetCoreUnitTestProject
 
             // act
             bool isLogin = objFakeAPI.IsValidUser(upObj.email, upObj.password);
-           
+
             // assert
             Assert.IsTrue(isLogin);
+        }
+
+        [TestMethod]
+        public void IsLoginValidationWorking()
+        {
+            UserProfile upObj = new UserProfile();
+            upObj.email = "";
+            upObj.password = "";
+
+            // arrange
+            FakeAPI objFakeAPI = new FakeAPI();
+
+            // act
+            bool isLogin = objFakeAPI.IsValidUser(upObj.email, upObj.password);
+
+            // assert
+            Assert.IsFalse(isLogin);
         }
 
         [TestMethod]
@@ -164,19 +194,47 @@ namespace MSDotNetCoreUnitTestProject
 
             // arrange
             FakeAPI objFakeAPI = new FakeAPI();
-            
+
             // act
             bool isLogin = objFakeAPI.IsChangeRequestEmailExists(ppObj.Email);
             Assert.IsTrue(isLogin);
-            
+
             // password change
             UserProfile upObj = new UserProfile();
             upObj.email = "mistryaalap@gmail.com";
             upObj.password = "aalaptest@123";
-            bool result= objFakeAPI.SetNewPasswordByEmailId(upObj.email, upObj.password);
+            bool result = objFakeAPI.SetNewPasswordByEmailId(upObj.email, upObj.password);
 
             // assert
             Assert.IsTrue(result);
+
+        }
+
+        [TestMethod]
+        public void IsChangePasswordWihtWorngEmailIdPasswordShouldNotToChange()
+        {
+            PendingPasswordChangeRequest ppObj = new PendingPasswordChangeRequest();
+            ppObj.Email = "mistryaalap123@gmail.com";
+
+            // arrange
+            FakeAPI objFakeAPI = new FakeAPI();
+
+            // act
+            bool isLogin = objFakeAPI.IsChangeRequestEmailExists(ppObj.Email);
+            Assert.IsFalse(isLogin);
+
+            if (isLogin != false)
+            {
+                // password change
+                UserProfile upObj = new UserProfile();
+                upObj.email = "mistryaalap@gmail.com";
+                upObj.password = "aalaptest@123";
+                bool result = objFakeAPI.SetNewPasswordByEmailId(upObj.email, upObj.password);
+
+                // assert
+                Assert.IsTrue(result);
+            }
+           
 
         }
 
