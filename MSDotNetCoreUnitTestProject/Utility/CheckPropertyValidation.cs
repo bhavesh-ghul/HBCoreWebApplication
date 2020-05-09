@@ -28,6 +28,12 @@ namespace MSDotNetCoreUnitTestProject.Utility
             // Return true if strIn is in valid e-mail format.
             return Regex.IsMatch(strIn, @"^([0-9]{10})$");
         }
-       
+
+        public bool IsValidPassword(string strPassword)
+        {
+            // Return true if strIn is in valid e-mail format.
+            return Regex.IsMatch(strPassword, @"^((?=.*\d)(?=.*[A-Z])(?=.*\W).{8,8})$");
+        }
+
     }
 }

@@ -72,6 +72,9 @@ namespace MSDotNetCoreUnitTestProject
             Assert.AreEqual(true, errorcount);
         }
 
+        /// <summary>
+        /// Phone Number only allow 10 digit 
+        /// </summary>
         [TestMethod]
         public void VerifyPhoneNumber_Length()
         {
@@ -84,10 +87,30 @@ namespace MSDotNetCoreUnitTestProject
             Assert.AreEqual(true, errorcount);
         }
 
+        /// <summary>
+        /// 8 characters including 1 uppercase letter, 
+        /// 1 special character, 
+        /// alphanumeric characters
+        /// </summary>
+        [TestMethod]
+        public void VerifyPassword_Format()
+        {
+            CheckPropertyValidation cpv = new CheckPropertyValidation();
+            var up = new UserProfile
+            {
+                password = "apple@8A",
+            };
+            var errorcount = cpv.IsValidPassword(up.password);
+            Assert.AreEqual(true, errorcount);
+        }
+
         #endregion
 
         #region Login
 
+        /// <summary>
+        /// To verify all validation fields rrquired 
+        /// </summary>
         [TestMethod]
         public void IsLoginFieldsRequired()
         {
@@ -101,8 +124,11 @@ namespace MSDotNetCoreUnitTestProject
             Assert.AreEqual(0, errorcount);
         }
 
+        /// <summary>
+        /// Required fields should works
+        /// </summary>
         [TestMethod]
-        public void IsLoginFieldsValidationWorks()
+        public void IsLoginRequiredFieldsValidationWorks()
         {
             CheckPropertyValidation cpv = new CheckPropertyValidation();
             var up = new LoginUser
@@ -114,6 +140,9 @@ namespace MSDotNetCoreUnitTestProject
             Assert.AreNotEqual(0, errorcount);
         }
 
+        /// <summary>
+        /// Is Login is Works with correct credential
+        /// </summary>
         [TestMethod]
         public void IsLoginWithCorrectCredential()
         {
@@ -131,25 +160,12 @@ namespace MSDotNetCoreUnitTestProject
             Assert.IsTrue(isLogin);
         }
 
+
+        /// <summary>
+        /// Check User Not To Login With Wrong Credential
+        /// </summary>
         [TestMethod]
-        public void IsLoginValidationWorking()
-        {
-            UserProfile upObj = new UserProfile();
-            upObj.email = "";
-            upObj.password = "";
-
-            // arrange
-            FakeAPI objFakeAPI = new FakeAPI();
-
-            // act
-            bool isLogin = objFakeAPI.IsValidUser(upObj.email, upObj.password);
-
-            // assert
-            Assert.IsFalse(isLogin);
-        }
-
-        [TestMethod]
-        public void IsLoginWithWrongCredential()
+        public void CheckUserNotToLoginWithWrongCredential()
         {
             UserProfile upObj = new UserProfile();
             upObj.email = "mistryaalap@gmail.com";
